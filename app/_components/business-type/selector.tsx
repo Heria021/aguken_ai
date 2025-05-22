@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { businessTypes, BusinessType } from "../../../lib/data";
 import { Button } from "@/components/ui/button";
@@ -18,9 +19,14 @@ interface BusinessTypeSelectorProps {
 
 export default function BusinessTypeSelector({ onContinue, onBack }: BusinessTypeSelectorProps) {
   const [selectedType, setSelectedType] = useState<BusinessType | null>(null);
+  const [showTypeCards, setShowTypeCards] = useState(false);
 
   const onSelectType = (type: BusinessType) => {
     setSelectedType(type);
+  };
+
+  const handleLovelyComplete = () => {
+    setShowTypeCards(true);
   };
 
   const handleLocalBack = () => {
@@ -62,43 +68,69 @@ export default function BusinessTypeSelector({ onContinue, onBack }: BusinessTyp
         <Lovely
           introText={selectedType.description || `Let's set up your ${selectedType.label} business`}
           descriptionText={''}
+          onComplete={handleLovelyComplete}
         />
       ) :
         <Lovely
-          introText={"Lovely to meet you Hariom Suthar"}
+          introText={"Lovely to meet you"}
           descriptionText={"Please select the type of business you want to use ResponseAI for:"}
+          onComplete={handleLovelyComplete}
         />}
 
-      {!selectedType ? (
-        // Show business type cards if no type is selected
-        <Card className="bg-background border border-border shadow-none rounded-2xl p-2">
-          <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-2">
-            {businessTypes.map((type) => (
-              <BusinessTypeCard
-                key={type.label}
-                type={type}
-                isSelected={false}
-                onClick={() => onSelectType(type)}
-              />
-            ))}
-          </CardContent>
+      <AnimatePresence mode="wait">
+        {!selectedType && showTypeCards ? (
+          // Show business type cards if no type is selected
+          <motion.div
+            key="type-selection"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Card className="bg-background border border-border shadow-none rounded-2xl p-2">
+              <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-2">
+                {businessTypes.map((type, index) => (
+                  <motion.div
+                    key={type.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                  >
+                    <BusinessTypeCard
+                      type={type}
+                      isSelected={false}
+                      onClick={() => onSelectType(type)}
+                    />
+                  </motion.div>
+                ))}
+              </CardContent>
 
-          <CardFooter className="flex justify-between p-2 pt-0">
-            <Button variant="ghost" onClick={onBack}>Back</Button>
-            <Button disabled>Continue</Button>
-          </CardFooter>
-        </Card>
-      ) : (
-        // Show the selected form
-        <Card className="bg-background border border-border shadow-none rounded-2xl p-2">
-          {renderSelectedForm()}
+              <CardFooter className="flex justify-between p-2 pt-0">
+                <Button variant="ghost" onClick={onBack}>Back</Button>
+                <Button disabled>Continue</Button>
+              </CardFooter>
+            </Card>
+          </motion.div>
+        ) : (selectedType && showTypeCards) ? (
+          // Show the selected form
+          <motion.div
+            key="selected-form"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4 }}
+          >
+            <Card className="bg-background border border-border shadow-none rounded-2xl p-2">
+              {renderSelectedForm()}
 
-          <CardFooter className="flex justify-between p-2 pt-0">
-            <Button variant="ghost" onClick={handleLocalBack} className="font-medium">Back</Button>
-            <Button onClick={handleContinue}>Continue</Button>
-          </CardFooter>
-        </Card>
-      )}
+              <CardFooter className="flex justify-between p-2 pt-0">
+                <Button variant="ghost" onClick={handleLocalBack} className="font-medium">Back</Button>
+                <Button onClick={handleContinue}>Continue</Button>
+              </CardFooter>
+            </Card>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 }

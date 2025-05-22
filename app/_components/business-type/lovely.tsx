@@ -1,35 +1,64 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { TypingAnimation } from "@/components/magicui/typing-animation";
 
 interface LovelyProps {
   introText: string;
   descriptionText: string;
+  onComplete?: () => void;
 }
 
-export default function Lovely({ introText, descriptionText }: LovelyProps) {
+export default function Lovely({ introText, descriptionText, onComplete }: LovelyProps) {
   const [firstDone, setFirstDone] = useState(false);
+  const [secondDone, setSecondDone] = useState(false);
+
+  // When the first typing animation is done
+  const handleFirstTypingEnd = () => {
+    setFirstDone(true);
+  };
+
+  // When the second typing animation is done
+  const handleSecondTypingEnd = () => {
+    setSecondDone(true);
+    if (onComplete) {
+      onComplete();
+    }
+  };
 
   return (
-    <div className="flex flex-col gap-4">
+    <motion.div
+      className="flex flex-col gap-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.05 }}
+    >
       <TypingAnimation
-        duration={40}
+        duration={20}
         className="text-xl font-semibold tracking-tight text-foreground"
-        onTypingEnd={() => setFirstDone(true)}
+        onTypingEnd={handleFirstTypingEnd}
         stop={firstDone}
       >
         {introText}
       </TypingAnimation>
 
       {firstDone && (
-        <TypingAnimation
-          duration={30}
-          className="text-sm text-muted-foreground font-semibold"
+        <motion.div
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.05 }}
         >
-          {descriptionText}
-        </TypingAnimation>
+          <TypingAnimation
+            duration={20}
+            className="text-sm text-muted-foreground font-semibold"
+            onTypingEnd={handleSecondTypingEnd}
+            stop={secondDone}
+          >
+            {descriptionText}
+          </TypingAnimation>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

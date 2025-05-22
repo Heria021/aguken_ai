@@ -82,7 +82,7 @@ export default function WelcomeForm({ onSubmit }: WelcomeFormProps) {
                     <div className="flex gap-2">
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="w-24 bg-muted text-foreground border border-border focus-visible:ring-ring">
+                          <SelectTrigger className="bg-muted text-foreground border border-border focus-visible:ring-ring">
                             <SelectValue placeholder="IN" />
                           </SelectTrigger>
                         </FormControl>
