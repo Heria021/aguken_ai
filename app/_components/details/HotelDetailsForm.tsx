@@ -7,6 +7,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Form } from "@/components/ui/form";
 import { Card } from "@/components/ui/card";
@@ -19,7 +20,7 @@ import { FormFooter } from "./components/FormFooter";
 
 const hotelDetailsSchema = z.object({
   totalRooms: z.coerce.number().min(1, "At least 1 room is required"),
-  groupName: z.string().min(1, "Group name is required"),
+  groupName: z.string().optional(), // Optional since it's only needed for file upload groups
   description: z.string().optional(),
   selectedDays: z.array(z.string()).min(1, "At least one day must be selected"),
   fromTime: z.string().min(1, "Opening time is required"),
@@ -35,6 +36,7 @@ export default function HotelDetailsForm({
   onBack?: () => void;
   onContinue?: (data: HotelDetailsSchema) => void;
 }) {
+  const router = useRouter();
   // State for managing file upload groups
   const [fileUploadGroups, setFileUploadGroups] = useState<FileUploadGroup[]>([]);
 
@@ -58,8 +60,17 @@ export default function HotelDetailsForm({
       fileUploadGroups,
     };
     console.log("Complete submission data:", submissionData);
-    // Pass the enhanced data with file upload groups
-    onContinue?.(submissionData as any);
+
+    // Save the data to localStorage for persistence
+    localStorage.setItem("hotelDetailsFormData", JSON.stringify(submissionData));
+
+    // If onContinue is provided, call it with the data
+    if (onContinue) {
+      onContinue(submissionData as any);
+    } else {
+      // Otherwise, redirect to the home page
+      router.push('/');
+    }
   };
 
   const handleFillLater = () => {
@@ -70,7 +81,14 @@ export default function HotelDetailsForm({
       fileUploadGroups,
     };
     localStorage.setItem("hotelDetailsFormData", JSON.stringify(savedData));
-    onContinue?.(savedData as any);
+
+    // If onContinue is provided, call it with the data
+    if (onContinue) {
+      onContinue(savedData as any);
+    } else {
+      // Otherwise, redirect to the home page
+      router.push('/');
+    }
   };
 
   return (

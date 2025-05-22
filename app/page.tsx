@@ -53,7 +53,14 @@ export default function Home() {
       {currentStep === FormStep.DETAILS && (
         <StepDetails
           selectedBusinessType={selectedBusinessType}
+          userData={userData}
           onBack={handleBack}
+          onComplete={(data) => {
+            // Save the complete data to localStorage
+            localStorage.setItem("finalSubmissionData", JSON.stringify(data));
+            // Reset to the welcome step (home)
+            setCurrentStep(FormStep.WELCOME);
+          }}
         />
       )}
     </div>

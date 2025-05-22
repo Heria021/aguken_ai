@@ -46,7 +46,7 @@ export function FileUploadSection({
     const groupName = form.getValues().groupName;
     const description = form.getValues().description || "";
 
-    if (!groupName) {
+    if (!groupName || groupName.trim() === "") {
       form.setError("groupName", {
         type: "manual",
         message: "Group name is required to add files"
@@ -97,7 +97,7 @@ export function FileUploadSection({
         name="groupName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Group Name</FormLabel>
+            <FormLabel>Group Name <span className="text-xs text-muted-foreground">(Required only for file uploads)</span></FormLabel>
             <FormControl>
               <Input {...field} placeholder="Enter group name" className="bg-muted text-foreground border border-border focus-visible:ring-ring" />
             </FormControl>

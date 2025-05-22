@@ -1,12 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface BlankDetailsPageProps {
   onBack?: () => void;
 }
 
 export default function BlankDetailsPage({ onBack }: BlankDetailsPageProps) {
+  const router = useRouter();
+
+  const handleHomeClick = () => {
+    router.push('/');
+  };
+
   return (
     <Card className="bg-background border border-border shadow-none rounded-2xl p-6">
       <CardContent className="py-6">
@@ -21,7 +27,7 @@ export default function BlankDetailsPage({ onBack }: BlankDetailsPageProps) {
         <Button variant="ghost" onClick={onBack}>
           Back
         </Button>
-        <Button onClick={redirect('/')}>
+        <Button onClick={handleHomeClick}>
           Home
         </Button>
       </CardFooter>
