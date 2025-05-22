@@ -47,7 +47,7 @@ export function OperatingHoursField({ form }: OperatingHoursFieldProps) {
                     <ToggleGroupItem
                       key={day}
                       value={day}
-                      className={`p-2 rounded-2xl font-semibold text-sm
+                      className={`p-2 rounded-2xl font-semibold text-xs lg:text-sm
                           first:rounded-l-2xl last:rounded-r-2xl
                           ${isSelected
                           ? "bg-primary text-primary-foreground "

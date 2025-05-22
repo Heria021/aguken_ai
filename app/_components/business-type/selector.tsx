@@ -72,7 +72,7 @@ export default function BusinessTypeSelector({ onContinue, onBack }: BusinessTyp
       {!selectedType ? (
         // Show business type cards if no type is selected
         <Card className="bg-background border border-border shadow-none rounded-2xl p-2">
-          <CardContent className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-2">
+          <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-2">
             {businessTypes.map((type) => (
               <BusinessTypeCard
                 key={type.label}
