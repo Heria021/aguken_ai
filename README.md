@@ -1,4 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AgukenAI
+
+A Next.js application for AgukenAI, an AI Agent helping with reception and support calls using GenAI-based phone call automation.
+
+## Project Structure
+
+The project follows a modular structure with individual folders for each feature:
+
+```
+app/
+├── (onboarding)/           # Onboarding flow group
+│   ├── layout.tsx          # Shared layout for onboarding pages
+│   ├── page.tsx            # Root onboarding page
+│   ├── welcome/            # Welcome page feature
+│   │   ├── page.tsx        # Welcome page
+│   │   └── welcome-container.tsx  # Container with all welcome components
+│   └── business-type/      # Business type selection feature
+│       ├── page.tsx        # Business type page
+│       └── business-type-container.tsx  # Container with all business type components
+├── (dashboard)/            # Dashboard flow group
+│   ├── layout.tsx          # Shared layout for dashboard pages
+│   └── dashboard/          # Dashboard feature
+│       ├── page.tsx        # Dashboard page
+│       └── dashboard-container.tsx  # Container with all dashboard components
+└── page.tsx                # Root page (redirects to onboarding)
+```
+
+## Architecture
+
+The application follows a component-based architecture with a clear separation of concerns:
+
+- **Container Components**: Each feature has a single container component that includes:
+  - UI Components: Responsible for rendering the UI
+  - Business Logic: Handles state management and user interactions
+  - Data: Contains any static data needed by the feature
+  - Types: Defines TypeScript interfaces used by the feature
+
+## Technologies Used
+
+- Next.js 14 with App Router
+- React 18
+- TypeScript
+- Tailwind CSS
+- shadcn/ui components
+- Zod for form validation
+- React Hook Form for form handling
 
 ## Getting Started
 
