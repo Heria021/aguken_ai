@@ -37,7 +37,7 @@ The application follows a component-based architecture with a clear separation o
 
 ## Technologies Used
 
-- Next.js 14 with App Router
+- Next.js 15 with App Router
 - React 18
 - TypeScript
 - Tailwind CSS
