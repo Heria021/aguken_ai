@@ -98,6 +98,18 @@ export default function FileUploadSection({
         )}
       />
 
+
+      {/* File Upload */}
+      <div>
+        <FormLabel>Files (Max 10)</FormLabel>
+        <UploadDropzone
+          ref={uploadDropzoneRef}
+          maxFiles={10}
+          onFilesAdded={handleFilesAdded}
+          onFilesRemoved={handleFilesRemoved}
+        />
+      </div>
+
       {/* Description */}
       <FormField
         control={form.control}
@@ -117,16 +129,6 @@ export default function FileUploadSection({
         )}
       />
 
-      {/* File Upload */}
-      <div>
-        <FormLabel>Files (Max 10)</FormLabel>
-        <UploadDropzone
-          ref={uploadDropzoneRef}
-          maxFiles={10}
-          onFilesAdded={handleFilesAdded}
-          onFilesRemoved={handleFilesRemoved}
-        />
-      </div>
 
       {/* Add button for file upload group */}
       <div className="flex gap-2 mt-4">

@@ -106,20 +106,6 @@ export function FileUploadSection({
         )}
       />
 
-      {/* Description */}
-      <FormField
-        control={form.control}
-        name="description"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Description</FormLabel>
-            <FormControl>
-              <Textarea placeholder="Enter description (optional)" {...field} className="resize-none bg-muted text-foreground border border-border focus-visible:ring-ring" />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
 
       <Separator className="my-4" />
 
@@ -133,6 +119,22 @@ export function FileUploadSection({
           onFilesRemoved={handleFilesRemoved}
         />
       </div>
+
+            {/* Description */}
+            <FormField
+        control={form.control}
+        name="description"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Description</FormLabel>
+            <FormControl>
+              <Textarea placeholder="Enter description (optional)" {...field} className="resize-none bg-muted text-foreground border border-border focus-visible:ring-ring" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
 
       {/* Add button for file upload group */}
       <div className="flex gap-2 mt-4">

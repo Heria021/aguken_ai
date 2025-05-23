@@ -13,6 +13,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { CardContent } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 
 const hotelFormSchema = z.object({
   hotelName: z.string().min(1, "Hotel name is required"),
@@ -21,6 +28,15 @@ const hotelFormSchema = z.object({
 });
 
 export type HotelFormValues = z.infer<typeof hotelFormSchema>;
+
+// Hotel size suggestions
+const HOTEL_SIZE_SUGGESTIONS = [
+  "5-10 employees",
+  "15-30 employees",
+  "30-50 employees",
+  "50-100 employees",
+  "100+ employees"
+];
 
 export default function HotelForm() {
   const form = useForm<HotelFormValues>({
@@ -44,7 +60,7 @@ export default function HotelForm() {
                 <FormLabel className="text-base font-semibold">Hotel Name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="E.g., Lake View Resort"
+                    placeholder="Enter your hotel name"
                     className="bg-muted text-foreground border border-border focus-visible:ring-ring"
                     {...field}
                   />
@@ -58,16 +74,26 @@ export default function HotelForm() {
             control={form.control}
             name="hotelSize"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full">
                 <FormLabel className="text-base font-semibold">Hotel Size</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="E.g., 20"
-                    type="number"
-                    className="bg-muted text-foreground border border-border focus-visible:ring-ring"
-                    {...field}
-                  />
-                </FormControl>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="bg-muted text-foreground border border-border focus-visible:ring-ring w-full">
+                      <SelectValue placeholder="Choose number of employees" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="w-full">
+                    {HOTEL_SIZE_SUGGESTIONS.map((suggestion) => (
+                      <SelectItem
+                        key={suggestion}
+                        value={suggestion}
+                        className="text-sm font-medium"
+                      >
+                        {suggestion}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -81,7 +107,7 @@ export default function HotelForm() {
                 <FormLabel className="text-base font-semibold">Hotel Location</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="E.g., Jaipur, India"
+                    placeholder="Enter your hotel location"
                     className="bg-muted text-foreground border border-border focus-visible:ring-ring"
                     {...field}
                   />
