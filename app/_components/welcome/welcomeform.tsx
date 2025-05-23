@@ -49,6 +49,23 @@ export default function WelcomeForm({ onSubmit }: WelcomeFormProps) {
     },
   });
 
+  // Phone format mapping based on country code
+  const phoneFormats = {
+    IN: "+91 xxxxxx xxxxx",
+    US: "+1 (xxx) xxx-xxxx",
+    UK: "+44 xxxx xxxxxx",
+  };
+
+  // Country code prefixes
+  const countryCodePrefixes = {
+    IN: "+91 ",
+    US: "+1 ",
+    UK: "+44 ",
+  };
+
+  // Get current country code value
+  const countryCode = form.watch("countryCode");
+
   return (
     <div>
       <Card className="bg-background text-foreground border border-border p-4">
@@ -79,10 +96,10 @@ export default function WelcomeForm({ onSubmit }: WelcomeFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base font-semibold text-muted-foreground">You can reach out at</FormLabel>
-                    <div className="flex gap-2">
+                    <div className="flex relative">
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="bg-muted text-foreground border border-border focus-visible:ring-ring">
+                          <SelectTrigger className="bg-muted text-foreground border border-border focus-visible:ring-ring rounded-r-none w-[70px]">
                             <SelectValue placeholder="IN" />
                           </SelectTrigger>
                         </FormControl>
@@ -99,18 +116,25 @@ export default function WelcomeForm({ onSubmit }: WelcomeFormProps) {
                         render={({ field }) => (
                           <FormItem className="flex-1">
                             <FormControl>
-                              <Input
-                                placeholder="Enter phone number"
-                                className="bg-muted text-foreground border border-border focus-visible:ring-ring"
-                                {...field}
-                              />
+                              <div className="relative">
+                                <div className="absolute text-sm font-medium left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground">
+                                  {countryCodePrefixes[countryCode as keyof typeof countryCodePrefixes]}
+                                </div>
+                                <Input
+                                  placeholder="Enter phone number"
+                                  type="number"
+                                  inputMode="numeric"
+                                  className="bg-muted text-foreground border border-border focus-visible:ring-ring rounded-l-none border-l-0 pl-10"
+                                  {...field}
+                                />
+                              </div>
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">Format: +91 xxxxxx xxxxx</p>
+                    <p className="text-xs text-muted-foreground mt-1">Format: {phoneFormats[countryCode as keyof typeof phoneFormats]}</p>
                   </FormItem>
                 )}
               />

@@ -6,7 +6,7 @@ import { TypingAnimation } from "@/components/magicui/typing-animation";
 
 interface LovelyProps {
   introText: string;
-  descriptionText: string;
+  descriptionText?: string;
   onComplete?: () => void;
 }
 
@@ -17,6 +17,13 @@ export default function Lovely({ introText, descriptionText, onComplete }: Lovel
   // When the first typing animation is done
   const handleFirstTypingEnd = () => {
     setFirstDone(true);
+
+    // If there's no description text, call onComplete immediately
+    if (!descriptionText) {
+      if (onComplete) {
+        onComplete();
+      }
+    }
   };
 
   // When the second typing animation is done
@@ -43,7 +50,7 @@ export default function Lovely({ introText, descriptionText, onComplete }: Lovel
         {introText}
       </TypingAnimation>
 
-      {firstDone && (
+      {firstDone && descriptionText && (
         <motion.div
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}

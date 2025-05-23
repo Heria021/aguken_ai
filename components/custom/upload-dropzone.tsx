@@ -122,7 +122,7 @@ export const UploadDropzone = React.forwardRef<
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full mt-2">
       <div
         className={cn(
           "border-input bg-muted text-muted-foreground flex flex-col items-center justify-center rounded-md border-2 border-dashed p-4 transition-colors",

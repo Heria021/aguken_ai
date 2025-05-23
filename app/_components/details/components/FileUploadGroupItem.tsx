@@ -13,9 +13,10 @@ export interface FileUploadGroup {
 interface FileUploadGroupItemProps {
   group: FileUploadGroup;
   onRemove: (id: string) => void;
+  index?: number; // Optional index parameter to show sequential numbers
 }
 
-export function FileUploadGroupItem({ group, onRemove }: FileUploadGroupItemProps) {
+export function FileUploadGroupItem({ group, onRemove, index = 0 }: FileUploadGroupItemProps) {
   return (
     <div
       key={group.id}
@@ -34,7 +35,7 @@ export function FileUploadGroupItem({ group, onRemove }: FileUploadGroupItemProp
         <div className="flex justify-between items-center">
           <h4 className="text-sm font-semibold text-foreground">
             Upload Menus(for food ordering or inquiries)
-            <span className="pl-1">#{group.id}</span>
+            <span className="pl-1">#{index + 1}</span>
           </h4>
         </div>
         <div className="grid grid-cols-[auto_1fr] gap-2 text-xs">

@@ -1,4 +1,4 @@
-import { BusinessType } from "../../../lib/data";
+import { BusinessType } from "@/lib/data";
 
 export function BusinessTypeCard({
   type,
@@ -14,7 +14,7 @@ export function BusinessTypeCard({
   return (
     <div
       onClick={onClick}
-      className={`rounded-xl p-6 flex flex-col items-center gap-3 text-center transition-all duration-200 border 
+      className={`h-full rounded-xl p-6 flex flex-col items-center gap-3 text-center transition-all duration-200 border 
         ${isSelected ? "border-primary bg-muted" : "border-muted bg-muted/50 hover:bg-muted"}`}
     >
       <div className={`p-3 rounded-full bg-muted-foreground/10 ${isSelected ? "text-primary" : "text-foreground"}`}>

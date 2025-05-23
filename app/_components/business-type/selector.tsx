@@ -5,12 +5,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { businessTypes, BusinessType } from "../../../lib/data";
 import { Button } from "@/components/ui/button";
-import { BusinessTypeCard } from "./BusinessTypeCard";
 import ClinicForm from "./business-type-forms/ClinicForm";
 import EventForm from "./business-type-forms/EventForm";
 import HotelForm from "./business-type-forms/HotelForm";
 import OthersForm from "./business-type-forms/OthersForm";
-import Lovely from "./lovely";
+import Lovely from "../../../components/shared/lovely";
+import { BusinessTypeCard } from "@/components/shared/BusinessTypeCard";
 
 interface BusinessTypeSelectorProps {
   onContinue: (businessType: BusinessType) => void;
@@ -30,11 +30,9 @@ export default function BusinessTypeSelector({ onContinue, onBack }: BusinessTyp
   };
 
   const handleLocalBack = () => {
-    // If a type is selected, clear it to go back to business type selection
     if (selectedType) {
       setSelectedType(null);
     } else {
-      // If no type is selected, go back to the previous step
       onBack();
     }
   };
@@ -45,7 +43,6 @@ export default function BusinessTypeSelector({ onContinue, onBack }: BusinessTyp
     }
   };
 
-  // Function to render the appropriate form based on selected business type
   const renderSelectedForm = () => {
     switch (selectedType?.label) {
       case "Hotels":
@@ -62,20 +59,37 @@ export default function BusinessTypeSelector({ onContinue, onBack }: BusinessTyp
   };
 
   return (
-    <div className="space-y-4">
-
-      {selectedType ? (
-        <Lovely
-          introText={selectedType.description || `Let's set up your ${selectedType.label} business`}
-          descriptionText={''}
-          onComplete={handleLovelyComplete}
-        />
-      ) :
-        <Lovely
-          introText={"Lovely to meet you"}
-          descriptionText={"Please select the type of business you want to use ResponseAI for:"}
-          onComplete={handleLovelyComplete}
-        />}
+    <div className="space-y-2">
+      <AnimatePresence mode="wait">
+        {selectedType ? (
+          <motion.div
+            key="selected-type-lovely"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Lovely
+              introText={selectedType.description || `Let's set up your ${selectedType.label} business`}
+              onComplete={handleLovelyComplete}
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="initial-lovely"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Lovely
+              introText={"Lovely to meet you"}
+              descriptionText={"Please select the type of business you want to use ResponseAI for:"}
+              onComplete={handleLovelyComplete}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence mode="wait">
         {!selectedType && showTypeCards ? (

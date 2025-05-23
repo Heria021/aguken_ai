@@ -1,37 +1,36 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { UseFormReturn } from "react-hook-form";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
+import React, { useRef, useState } from "react";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import { UploadDropzone } from "@/components/custom/upload-dropzone";
-import { FileUploadGroup, FileUploadGroupItem } from "./FileUploadGroupItem";
+import { UseFormReturn } from "react-hook-form";
+import { SopFormValues } from "./sop-form";
+
+export interface FileUploadGroup {
+  id: string;
+  groupName: string;
+  description: string;
+  files: File[];
+}
 
 interface FileUploadSectionProps {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<SopFormValues>;
   fileUploadGroups: FileUploadGroup[];
   setFileUploadGroups: React.Dispatch<React.SetStateAction<FileUploadGroup[]>>;
 }
 
-export function FileUploadSection({
+export default function FileUploadSection({
   form,
   fileUploadGroups,
-  setFileUploadGroups
+  setFileUploadGroups,
 }: FileUploadSectionProps) {
   const [currentFiles, setCurrentFiles] = useState<File[]>([]);
   const uploadDropzoneRef = useRef<{ clearFiles: () => void }>(null);
 
-  // Handle file uploads
+  // Handle file additions
   const handleFilesAdded = (files: File[]) => {
     setCurrentFiles(files);
   };
@@ -68,38 +67,31 @@ export function FileUploadSection({
     };
 
     setFileUploadGroups([...fileUploadGroups, newGroup]);
-
-    // Reset the form fields and current files
+    
+    // Clear the form fields and files
     form.setValue("groupName", "");
     form.setValue("description", "");
     setCurrentFiles([]);
-
-    // Clear the files in the dropzone
-    if (uploadDropzoneRef.current) {
-      uploadDropzoneRef.current.clearFiles();
-    }
-  };
-
-  // Remove a file upload group
-  const removeFileUploadGroup = (id: string) => {
-    setFileUploadGroups(fileUploadGroups.filter(group => group.id !== id));
+    uploadDropzoneRef.current?.clearFiles();
   };
 
   return (
-    <>
-      <div className="space-y-1 mt-6">
-        <p className="text-sm font-medium">Upload Menus (for food ordering or inquiries)</p>
-      </div>
-
+    <div className="space-y-4">
+      <h3 className="text-base font-semibold mb-4">Upload SOPs (Standard Operating Procedures)</h3>
+      
       {/* Group Name */}
       <FormField
         control={form.control}
         name="groupName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Group Name <span className="text-xs text-muted-foreground">(Required only for file uploads)</span></FormLabel>
+            <FormLabel>Group Name</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="Enter group name" className="bg-muted text-foreground border border-border focus-visible:ring-ring" />
+              <Input 
+                placeholder="Enter name" 
+                className="bg-muted text-foreground border border-border focus-visible:ring-ring"
+                {...field} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -114,18 +106,20 @@ export function FileUploadSection({
           <FormItem>
             <FormLabel>Description</FormLabel>
             <FormControl>
-              <Textarea placeholder="Enter description (optional)" {...field} className="resize-none bg-muted text-foreground border border-border focus-visible:ring-ring" />
+              <Textarea 
+                placeholder="Enter description" 
+                className="resize-none bg-muted text-foreground border border-border focus-visible:ring-ring"
+                {...field} 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      <Separator className="my-4" />
-
       {/* File Upload */}
-      <div className="space-y-1">
-        <Label>Files (Max 10)</Label>
+      <div>
+        <FormLabel>Files (Max 10)</FormLabel>
         <UploadDropzone
           ref={uploadDropzoneRef}
           maxFiles={10}
@@ -141,26 +135,9 @@ export function FileUploadSection({
           onClick={addFileUploadGroup}
           variant="secondary"
         >
-          Add Files with Group Info
+          Add
         </Button>
       </div>
-
-      {/* Display uploaded file groups */}
-      {fileUploadGroups.length > 0 && (
-        <div className="mt-6 space-y-4">
-          <h3 className="text-sm font-medium">Added items: </h3>
-          <div className="space-y-4">
-            {fileUploadGroups.map((group, index) => (
-              <FileUploadGroupItem
-                key={group.id}
-                group={group}
-                onRemove={removeFileUploadGroup}
-                index={index}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-    </>
+    </div>
   );
 }

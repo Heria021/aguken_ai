@@ -17,13 +17,13 @@ export interface BusinessType {
 export const businessTypes: BusinessType[] = [
     {
       label: "Hotels",
-      description: "Boutique Hotels, Business Hotels, 4 star + Hotels",
+      description: "Let's set up your hotel business",
       icon: Building2,
       introText: "Let's set up your hotel business",
     },
     {
       label: "Clinics",
-      description: "Medical Clinics, Dental Clinics, Specialty Clinics",
+      description: "Let's set up your medical clinic",
       icon: Stethoscope,
       introText: "Let's set up your medical clinic",
     },
